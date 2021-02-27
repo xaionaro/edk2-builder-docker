@@ -26,7 +26,7 @@ Take any EDK2-based project you need to compile, for example "[github.com/andrei
 ```sh
 docker pull xaionaro2/edk2-builder
 cd "`mktemp -d`"
-git clone --recorsive https://github.com/andreiw/UefiToolsPkg
+git clone --recursive https://github.com/andreiw/UefiToolsPkg
 docker run -e CFLAGS='-Wno-error' -e EDK2VERSION=9bcca53fe466cdff397578328d9d87d257aba493 --rm -e DSC_PATH=UefiToolsPkg/UefiToolsPkg.dsc -v "$PWD/:/home/edk2/src" -t -i "xaionaro2/edk2-builder"
 ```
 That's it :)
