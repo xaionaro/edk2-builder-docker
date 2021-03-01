@@ -48,4 +48,4 @@ echo "$PATH"
 echo "$PACKAGES_PATH"
 gcc --version
 
-exec build -v -p "$DSC_PATH" -a "$TARGET_ARCH" -b "$BUILD_TARGET" -t "$TOOLCHAIN" $OPTIONS
+exec build -v -p $DSC_PATH -a "$TARGET_ARCH" -b "$BUILD_TARGET" -t "$TOOLCHAIN" $OPTIONS
