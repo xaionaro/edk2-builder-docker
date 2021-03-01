@@ -1,6 +1,6 @@
 
 all:
-	docker build -t github.com/xaionaro/edk2-builder-docker .
+	docker build -t xaionaro2/edk2-builder .
 
 clean:
-	docker rmi github.com/xaionaro/edk2-builder-docker
+	docker rmi xaionaro2/edk2-builder
