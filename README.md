@@ -24,16 +24,22 @@ The purpose of this project is to prepare a comprehensive build environment whic
 
 Take any EDK2-based project you need to compile, for example "[github.com/andreiw/UefiToolsPkg](https://github.com/andreiw/UefiToolsPkg)":
 ```sh
-docker pull xaionaro2/edk2-builder
 cd "`mktemp -d`"
-mkdir /tmp/UefiToolsPkg-build
-chmod 1777 /tmp/UefiToolsPkg-build
+mkdir -m 1777 /tmp/UefiToolsPkg-build
+
 git clone --recursive https://github.com/andreiw/UefiToolsPkg
-docker run -e CFLAGS='-Wno-error' -e EDK2VERSION=9bcca53fe466cdff397578328d9d87d257aba493 --rm \
+docker pull xaionaro2/edk2-builder:vUDK2018
+docker run --rm \
+  -e CFLAGS=-Wno-error \
   -e DSC_PATH=UefiToolsPkg/UefiToolsPkg.dsc \
   -v "$PWD/:/home/edk2/src" -v "/tmp/UefiToolsPkg-build:/home/edk2/Build" \
-  -t -i "xaionaro2/edk2-builder"
+  xaionaro2/edk2-builder:vUDK2018
 ```
 That's it :)
 
 The result will be in `/tmp/UefiToolsPkg-build`.
+
+Explanation:
+* `vUDK2018` is [a version of EDK2](https://github.com/tianocore/edk2/tags).
+* Directory `/home/edk2/Build` is defined in `UefiToolsPkg/UefiToolsPkg.dsc` as `Build`, since the working directory is `/home/edk2`
+* Directory `/home/edk2/src` is hardcoded in the `Dockerfile` as the directory with the source code of what do we want to compile.

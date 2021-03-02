@@ -5,23 +5,16 @@ cd /home/edk2 || exit 2
 
 if [ "$CFLAGS" != '' ]; then
     BUILD_CFLAGS+=($CFLAGS)
+    BUILD_CXXFLAGS+=($CFLAGS)
     CC_FLAGS+=($CFLAGS)
 fi
+export BUILD_CFLAGS
+export BUILD_CXXFLAGS
 
-if [ "$EDK2VERSION" != 'master' ]; then
+if [ "$EDK2VCOMMIT" != '' ]; then
     make -C edk2/BaseTools clean
-    git -C edk2 checkout "$EDK2VERSION" || exit 1
-    if [ "$BUILD_CFLAGS" != '' ]; then
-        cp -v /home/edk2/edk2/BaseTools/Source/C/Makefiles/header.makefile-orig /home/edk2/edk2/BaseTools/Source/C/Makefiles/header.makefile 2>/dev/null ||
-          cp -v /home/edk2/edk2/BaseTools/Source/C/Makefiles/header.makefile /home/edk2/edk2/BaseTools/Source/C/Makefiles/header.makefile-orig
-        echo "BUILD_CFLAGS += $BUILD_CFLAGS" >> /home/edk2/edk2/BaseTools/Source/C/Makefiles/header.makefile
-    fi
-    make -C edk2/BaseTools -j 8 && make -C /home/edk2/edk2/BaseTools/Source/C || (
-      # fixing a bug in "vUDK2017"
-      sed -e 's/#include "VfrTokens.h"/#include <VfrTokens.h>/g' -i edk2/BaseTools/Source/C/VfrCompile/VfrSyntax.cpp &&
-      make -C edk2/BaseTools -j 8
-      make -C /home/edk2/edk2/BaseTools/Source/C
-    )
+    git -C edk2 checkout "$EDK2COMMIT" || exit 1
+    /home/edk2/build-edk2.sh
 fi
 
 if [ "$ADDPATH" != '' ]; then
@@ -48,4 +41,11 @@ echo "$PATH"
 echo "$PACKAGES_PATH"
 gcc --version
 
-exec build -v -p $DSC_PATH -a "$TARGET_ARCH" -b "$BUILD_TARGET" -t "$TOOLCHAIN" $OPTIONS
+DSC_PATH="$(readlink -f /home/edk2/src/*.dsc)"
+if [ "$DSC_PATH" = '' ]; then
+  DSC_PATH="$(readlink -f /home/edk2/src/*/*.dsc)"
+fi
+
+for DSC_PATH_ITEM in ${DSC_PATH[0]}; do
+  build -v -p "$DSC_PATH_ITEM" -a "$TARGET_ARCH" -b "$BUILD_TARGET" -t "$TOOLCHAIN" $OPTIONS || exit
+done
