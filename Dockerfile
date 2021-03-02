@@ -47,11 +47,14 @@ WORKDIR /home/edk2
 ENV PYTHON_COMMAND python3
 
 RUN git clone "https://github.com/tianocore/edk2" edk2
-RUN git -C edk2 submodule update --init
-RUN make -C edk2/BaseTools -j 8
-
 RUN git clone "https://github.com/tianocore/edk2-libc" libc
 RUN git clone "https://github.com/tianocore/edk2-platforms" platforms
+
+ARG DOCKER_TAG=${DOCKER_TAG}
+RUN echo "DOCKER_TAG:<$DOCKER_TAG>" && if [ "$DOCKER_TAG" != '' -a "$DOCKER_TAG" != 'latest' ]; then git -C edk2 checkout "$DOCKER_TAG"; fi
+RUN git -C edk2 submodule update --init
+ADD build-edk2.sh /home/edk2/build-edk2.sh
+RUN /home/edk2/build-edk2.sh
 
 RUN mkdir -p /home/edk2/src /home/edk2/gcc/7 /home/edk2/gcc/9 /home/edk2/gcc/10 && \
     ln -s /usr/bin/gcc-7 /home/edk2/gcc/7/gcc && \
@@ -62,7 +65,6 @@ ENV WORKSPACE "/home/edk2"
 ENV TOOLCHAIN "GCC5"
 ENV TARGET_ARCH "X64"
 ENV BUILD_TARGET "DEBUG"
-ENV DSC_PATH "/home/edk2/src/*.dsc"
-ENV EDK2VERSION "master"
+ADD build-edk2.sh /home/edk2/build-edk2.sh
 ADD entry.sh /home/edk2/entry.sh
 CMD /bin/bash /home/edk2/entry.sh
