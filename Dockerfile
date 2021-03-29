@@ -29,7 +29,7 @@ RUN \
 		zip \
 	&& DEBIAN_FRONTEND=noninteractive apt-get clean
 
-RUN curl https://bootstrap.pypa.io/2.7/get-pip.py --output /tmp/get-pip.py && python /tmp/get-pip.py
+RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output /tmp/get-pip.py && python /tmp/get-pip.py
 RUN pip3 install -q uefi_firmware && pip install -q uefi_firmware
 
 RUN useradd -m edk2 && \
