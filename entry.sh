@@ -41,7 +41,9 @@ echo "$PATH"
 echo "$PACKAGES_PATH"
 gcc --version
 
-DSC_PATH="$(readlink -f /home/edk2/src/*.dsc)"
+if [ "$DSC_PATH" = '' ]; then
+  DSC_PATH="$(readlink -f /home/edk2/src/*.dsc)"
+fi
 if [ "$DSC_PATH" = '' ]; then
   DSC_PATH="$(readlink -f /home/edk2/src/*/*.dsc)"
 fi
