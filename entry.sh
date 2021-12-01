@@ -32,9 +32,11 @@ cd /home/edk2/edk2 || exit 2
 . edksetup.sh
 
 if [ "$CC_FLAGS" != '' ]; then
-    cp -v /home/edk2/edk2/Conf/tools_def.txt-orig /home/edk2/edk2/Conf/tools_def.txt 2>/dev/null ||
-      cp -v /home/edk2/edk2/Conf/tools_def.txt /home/edk2/edk2/Conf/tools_def.txt-orig
-    echo "${BUILD_TARGET}_${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS = DEF(${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS) ${CC_FLAGS}" >> /home/edk2/edk2/Conf/tools_def.txt
+    if [ -f /home/edk2/edk2/Conf/tools_def.txt ]; then
+        cp -v /home/edk2/edk2/Conf/tools_def.txt-orig /home/edk2/edk2/Conf/tools_def.txt 2>/dev/null ||
+          cp -v /home/edk2/edk2/Conf/tools_def.txt /home/edk2/edk2/Conf/tools_def.txt-orig
+        echo "${BUILD_TARGET}_${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS = DEF(${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS) ${CC_FLAGS}" >> /home/edk2/edk2/Conf/tools_def.txt
+    fi
 fi
 
 echo "$PATH"
