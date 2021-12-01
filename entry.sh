@@ -31,24 +31,31 @@ fi
 cd /home/edk2/edk2 || exit 2
 . edksetup.sh
 
-if [ "$CC_FLAGS" != '' ]; then
-    if [ -f /home/edk2/edk2/Conf/tools_def.txt ]; then
-        cp -v /home/edk2/edk2/Conf/tools_def.txt-orig /home/edk2/edk2/Conf/tools_def.txt 2>/dev/null ||
-          cp -v /home/edk2/edk2/Conf/tools_def.txt /home/edk2/edk2/Conf/tools_def.txt-orig
-        echo "${BUILD_TARGET}_${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS = DEF(${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS) ${CC_FLAGS}" >> /home/edk2/edk2/Conf/tools_def.txt
-    fi
-fi
-
-echo "$PATH"
-echo "$PACKAGES_PATH"
-gcc --version
-
 if [ "$DSC_PATH" = '' ]; then
   DSC_PATH="$(readlink -f /home/edk2/src/*.dsc)"
 fi
 if [ "$DSC_PATH" = '' ]; then
   DSC_PATH="$(readlink -f /home/edk2/src/*/*.dsc)"
 fi
+
+if [ "$CC_FLAGS" != '' ]; then
+    CC_FLAGS_SETTING="${BUILD_TARGET}_${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS"
+    if [ -f /home/edk2/edk2/Conf/tools_def.txt ]; then
+        cp -v /home/edk2/edk2/Conf/tools_def.txt-orig /home/edk2/edk2/Conf/tools_def.txt 2>/dev/null ||
+          cp -v /home/edk2/edk2/Conf/tools_def.txt /home/edk2/edk2/Conf/tools_def.txt-orig
+        echo "${CC_FLAGS_SETTING} = DEF(${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS) ${CC_FLAGS}" >> /home/edk2/edk2/Conf/tools_def.txt
+    else
+        for DSC_PATH_ITEM in ${DSC_PATH[0]}; do
+            cp -v "${DSC_PATH_ITEM}"-orig "${DSC_PATH_ITEM}" 2>/dev/null ||
+                cp -v "${DSC_PATH_ITEM}" "${DSC_PATH_ITEM}"-orig
+            echo -e "\n[BuildOptions.common]\n${CC_FLAGS_SETTING} = ${CC_FLAGS}\n" >> "${DSC_PATH_ITEM}"
+        done
+    fi
+fi
+
+echo "$PATH"
+echo "$PACKAGES_PATH"
+gcc --version
 
 for DSC_PATH_ITEM in ${DSC_PATH[0]}; do
   build -v -p "$DSC_PATH_ITEM" -a "$TARGET_ARCH" -b "$BUILD_TARGET" -t "$TOOLCHAIN" $OPTIONS || exit
