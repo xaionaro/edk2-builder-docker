@@ -1,2 +1,8 @@
 #!/bin/bash
-exec docker build --build-arg DOCKER_TAG=$DOCKER_TAG -f $DOCKERFILE_PATH -t $IMAGE_NAME .
+
+if [ "$EDK2_VERSION" = '' ]; then
+	EDK2_VERSION="$DOCKER_TAG"
+fi
+
+exec docker build --build-arg EDK2_VERSION="$EDK2_VERSION" -f "$DOCKERFILE_PATH" -t "$IMAGE_NAME" .
+

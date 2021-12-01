@@ -50,8 +50,9 @@ RUN git clone "https://github.com/tianocore/edk2" edk2
 RUN git clone "https://github.com/tianocore/edk2-libc" libc
 RUN git clone "https://github.com/tianocore/edk2-platforms" platforms
 
-ARG DOCKER_TAG=${DOCKER_TAG}
-RUN echo "DOCKER_TAG:<$DOCKER_TAG>" && if [ "$DOCKER_TAG" != '' -a "$DOCKER_TAG" != 'latest' ]; then git -C edk2 checkout "$DOCKER_TAG"; fi
+ARG EDK2_VERSION=${EDK2_VERSION}
+ARG IMAGE_NAME=${IMAGE_NAME}
+RUN echo "EDK2_VERSION:<$EDK2_VERSION>" && if [ "$EDK2_VERSION" != '' -a "$EDK2_VERSION" != 'latest' ]; then git -C edk2 checkout "$EDK2_VERSION"; fi
 RUN git -C edk2 submodule update --init
 ADD build-edk2.sh /home/edk2/build-edk2.sh
 RUN /home/edk2/build-edk2.sh
