@@ -26,6 +26,9 @@ sed -e 's/all: test/all:\n\t@echo noop/g' -i edk2/BaseTools/Tests/GNUmakefile
 # fixing a bug in "vUDK2017"
 sed -e 's/#include "VfrTokens.h"/#include <VfrTokens.h>/g' -i edk2/BaseTools/Source/C/VfrCompile/VfrSyntax.cpp 2>/dev/null || true
 
+# fixing a bug in 2021
+sed -e 's/-Werror//g' -i edk2/src/RefindPlusUDK/BaseTools/Source/C/Makefiles/header.makefile 2>/dev/null || true
+
 # Speed-up the process with `-j`. But it seems EDK2 sometimes fails if we parallelize the building,
 # so we retry without `-j`
 make -C edk2/BaseTools -j $(nproc) || make -C edk2/BaseTools

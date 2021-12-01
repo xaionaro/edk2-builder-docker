@@ -2,6 +2,11 @@
 
 set -xe
 
+IS_FORCE=0
+if [ "$1" = "--force" ]; then
+	IS_FORCE=1
+fi
+
 push() {
 	TAG="$1"; shift
 	IMAGE_NAME=xaionaro2/edk2-builder:"$TAG"
@@ -16,8 +21,10 @@ push "latest"
 
 for TAG in $(git ls-remote --tags https://github.com/tianocore/edk2 | awk '{print $2}' | sed -e 's%refs/tags/%%g' | grep -v '{}'); do
 	IMAGE_NAME=xaionaro2/edk2-builder:"$TAG"
-	if DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect "$IMAGE_NAME"; then
-		continue
+	if [ "$IS_FORCE" -eq 0 ]; then
+		if DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect "$IMAGE_NAME"; then
+			continue
+		fi
 	fi
 	push "$TAG"
 done
