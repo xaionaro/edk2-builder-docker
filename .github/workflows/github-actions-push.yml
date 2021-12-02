@@ -1,7 +1,11 @@
 name: Push to DockerHub
-on: [push]
+on:
+  push:
+    branches:
+      - main
 jobs:
   push:
+    environment: common
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -10,7 +14,6 @@ jobs:
       - shell: bash
         env:
           DOCKERHUB_KEY: ${{ secrets.DOCKERHUB_KEY }}
-        run: |
-          docker login -u xaionaro2 -p "$DOCKERHUB_KEY"
+        run: docker login -u xaionaro2 --password-stdin <<< "$DOCKERHUB_KEY"
       - run: echo "Building and pushing"
-      - run: {{ github.workspace }}/push-to-dockerhub.sh
+      - run: ${{ github.workspace }}/push-to-dockerhub.sh
