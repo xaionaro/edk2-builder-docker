@@ -1,19 +1,31 @@
-name: Push to DockerHub
+name: Push to registries
 on:
   push:
     branches:
+      - ci
       - main
 jobs:
-  push:
-    environment: common
+  dockerhub:
+    environment: dockerhub
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - run: echo "Logging in to DockerHub"
-      - shell: bash
+      - run: ${{ github.workspace }}/push-to-registry.sh
         env:
-          DOCKERHUB_KEY: ${{ secrets.DOCKERHUB_KEY }}
-        run: docker login -u xaionaro2 --password-stdin <<< "$DOCKERHUB_KEY"
-      - run: echo "Building and pushing"
-      - run: ${{ github.workspace }}/push-to-dockerhub.sh
+          REGISTRY_ADDR: registry.hub.docker.com
+          REGISTRY_LOGIN: xaionaro2
+          REGISTRY_KEY: ${{ secrets.REGISTRY_KEY }}
+          REGISTRY_IMAGE_NAME: xaionaro2/edk2-builder
+  github:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - run: ${{ github.workspace }}/push-to-registry.sh
+        env:
+          REGISTRY_ADDR: ghcr.io
+          REGISTRY_LOGIN: ${{ github.actor }}
+          REGISTRY_KEY: ${{ secrets.GITHUB_TOKEN }}
+          REGISTRY_IMAGE_NAME: ${{ github.repository }}
+
