@@ -34,7 +34,8 @@ git clone --recursive https://github.com/andreiw/UefiToolsPkg
 docker pull xaionaro2/edk2-builder:vUDK2018
 
 # removing "SetCon" from the list if components, because the tool is not buildable
-sed -e 's%  UefiToolsPkg/Applications/SetCon/SetCon.inf%#  UefiToolsPkg/Applications/SetCon/SetCon.inf%' -i UefiToolsPkg/UefiToolsPkg.dsc
+sed -e 's%  UefiToolsPkg/Applications/SetCon/SetCon.inf%#  UefiToolsPkg/Applications/SetCon/SetCon.inf%' \
+    -i-orig UefiToolsPkg/UefiToolsPkg.dsc
 
 docker run --rm \
   -e CFLAGS=-Wno-error \
@@ -64,7 +65,7 @@ docker pull xaionaro2/edk2-builder:RefindPlusUDK
 # hacky fix for duplication error of lodepng_malloc and lodepng_free
 sed -e 's/void[*] lodepng_malloc/void* _dup_lodepng_malloc/' \
     -e 's/void lodepng_free/void _dup_lodepng_free/' \
-    -i RefindPlusPkg/libeg/lodepng_xtra.c
+    -i-orig RefindPlusPkg/libeg/lodepng_xtra.c
 
 # building
 docker run --rm \
