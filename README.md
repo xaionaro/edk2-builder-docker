@@ -89,3 +89,13 @@ Or if [`edk2-stable202111`](https://github.com/tianocore/edk2/tags) then:
 EDK2_VERSION=edk2-stable202111 DOCKERFILE_PATH=Dockerfile IMAGE_NAME=xaionaro2/edk2-builder:stable202111 hooks/build
 ```
 
+# Add a custom EDK2 repository
+
+Fork the repository, add the repository to file [`clone-edk2.sh`](https://github.com/xaionaro/edk2-builder-docker/blob/main/clone-edk2.sh) with a new special tag,
+and then run:
+```
+EDK2_VERSION=<THE SPECIAL TAG HERE> DOCKERFILE_PATH=Dockerfile IMAGE_NAME=<SOME IMAGE NAME>:<SOME TAG> hooks/build
+```
+It will build a docker image `<SOME IMAGE NAME>:<SOME TAG>` using the custom EDK2 repository.
+
+It would also be nice if after that there will be a Pull Request to push this changes back to here :)
