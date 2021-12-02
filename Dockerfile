@@ -46,28 +46,27 @@ VOLUME /home/edk2/.ccache
 USER edk2
 WORKDIR /home/edk2
 
-ENV PYTHON_COMMAND python3
-
-RUN git clone "https://github.com/tianocore/edk2" edk2
-RUN git clone "https://github.com/tianocore/edk2-libc" libc
-RUN git clone "https://github.com/tianocore/edk2-platforms" platforms
-
-ARG EDK2_VERSION=${EDK2_VERSION}
-ARG IMAGE_NAME=${IMAGE_NAME}
-RUN echo "EDK2_VERSION:<$EDK2_VERSION>" && if [ "$EDK2_VERSION" != '' -a "$EDK2_VERSION" != 'latest' ]; then git -C edk2 checkout "$EDK2_VERSION"; fi
-RUN git -C edk2 submodule update --init
-ADD build-edk2.sh /home/edk2/build-edk2.sh
-RUN /home/edk2/build-edk2.sh
-
 RUN mkdir -p /home/edk2/src /home/edk2/gcc/7 /home/edk2/gcc/9 /home/edk2/gcc/10 && \
-    ln -s /usr/bin/gcc-7 /home/edk2/gcc/7/gcc && \
-    ln -s /usr/bin/gcc-9 /home/edk2/gcc/9/gcc && \
-    ln -s /usr/bin/gcc-10 /home/edk2/gcc/10/gcc
+	ln -s /usr/bin/gcc-7 /home/edk2/gcc/7/gcc && \
+	ln -s /usr/bin/gcc-9 /home/edk2/gcc/9/gcc && \
+	ln -s /usr/bin/gcc-10 /home/edk2/gcc/10/gcc
 
 ENV WORKSPACE "/home/edk2"
 ENV TOOLCHAIN "GCC5"
 ENV TARGET_ARCH "X64"
 ENV BUILD_TARGET "DEBUG"
+
+ENV PYTHON_COMMAND python3
+
+RUN git clone "https://github.com/tianocore/edk2-libc" libc
+RUN git clone "https://github.com/tianocore/edk2-platforms" platforms
+
+ARG EDK2_VERSION=${EDK2_VERSION}
+ADD clone-edk2.sh /home/edk2/clone-edk2.sh
+RUN /home/edk2/clone-edk2.sh
 ADD build-edk2.sh /home/edk2/build-edk2.sh
+RUN /home/edk2/build-edk2.sh
+
+ARG OPTIONS=${OPTIONS}
 ADD entry.sh /home/edk2/entry.sh
 CMD /bin/bash /home/edk2/entry.sh

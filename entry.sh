@@ -56,13 +56,20 @@ if [ "$CC_FLAGS" != '' ]; then
         TOOLS_DEF_PATH="$1"; shift
         cp -v "$TOOLS_DEF_PATH"-orig "$TOOLS_DEF_PATH" 2>/dev/null ||
           cp -v "$TOOLS_DEF_PATH" "$TOOLS_DEF_PATH"-orig 2>/dev/null
-        echo "${CC_FLAGS_SETTING} = DEF(${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS) ${CC_FLAGS}" >> "$TOOLS_DEF_PATH"
+        if grep -E "^${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS[ \t=]" "$TOOLS_DEF_PATH"-orig; then
+            echo "${CC_FLAGS_SETTING} = DEF(${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS) ${CC_FLAGS}" >> "$TOOLS_DEF_PATH"
+        else
+            if grep -E "^${CC_FLAGS_SETTING}[ \t=]" "$TOOLS_DEF_PATH"-orig; then
+                sed -re 's/^('"${CC_FLAGS_SETTING}"'[ \t=][^\r]*)/\1 '"${CC_FLAGS}/" -i "$TOOLS_DEF_PATH"
+            else
+                echo "${CC_FLAGS_SETTING} = ${CC_FLAGS}" >> "$TOOLS_DEF_PATH"
+            fi
+        fi
     }
-    find / -name "tools_def.txt" | while read -r TOOLS_DEF_PATH; do
+    find /home/edk2 -name "tools_def.txt" | while read -r TOOLS_DEF_PATH; do
         append_cc_flags_to_tools_def "$TOOLS_DEF_PATH"
     done
     append_cc_flags_to_tools_def "/home/edk2/edk2/Conf/tools_def.txt"
-    append_cc_flags_to_tools_def "/home/edk2/customConf/tools_def.txt"
 
     for DSC_PATH_ITEM in ${DSC_PATH[0]}; do
         cp -v "${DSC_PATH_ITEM}"-orig "${DSC_PATH_ITEM}" 2>/dev/null ||
@@ -77,5 +84,5 @@ echo "PACKAGES_PATH:<$PACKAGES_PATH>"
 gcc --version
 
 for DSC_PATH_ITEM in ${DSC_PATH[0]}; do
-  build -v -p "$DSC_PATH_ITEM" -a "$TARGET_ARCH" -b "$BUILD_TARGET" -t "$TOOLCHAIN" --conf "/home/edk2/customConf" $OPTIONS || exit
+  build -v -p "$DSC_PATH_ITEM" -a "$TARGET_ARCH" -b "$BUILD_TARGET" -t "$TOOLCHAIN" $OPTIONS || exit
 done

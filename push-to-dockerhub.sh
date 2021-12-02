@@ -5,6 +5,7 @@ set -xe
 IS_FORCE=0
 if [ "$1" = "--force" ]; then
 	IS_FORCE=1
+	shift
 fi
 
 push() {
@@ -17,11 +18,16 @@ push() {
 	docker rmi "$IMAGE_NAME"
 }
 
-push "latest"
+if [ "$@" != "" ]; then
+	TAGS=($@)
+else
+	TAGS=(latest $(git ls-remote --tags https://github.com/tianocore/edk2 | awk '{print $2}' | sed -e 's%refs/tags/%%g' | grep -v '{}') RefindPlusUDK)
+fi
+echo "TAGS:<${TAGS[@]}>"
 
-for TAG in $(git ls-remote --tags https://github.com/tianocore/edk2 | awk '{print $2}' | sed -e 's%refs/tags/%%g' | grep -v '{}'); do
+for TAG in "${TAGS[@]}"; do
 	IMAGE_NAME=xaionaro2/edk2-builder:"$TAG"
-	if [ "$IS_FORCE" -eq 0 ]; then
+	if [ "$TAG" != "latest" -a "$IS_FORCE" -eq 0 ]; then
 		if DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect "$IMAGE_NAME"; then
 			continue
 		fi
