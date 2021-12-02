@@ -7,8 +7,7 @@ case "$EDK2_VERSION" in
 		;;
 	RefindPlusUDK)
 		git clone "https://github.com/dakanji/RefindPlusUDK" edk2
-		;;
-	*)
+		;;	
 	AcidantheraAUDK)
 		git clone "https://github.com/acidanthera/audk" edk2
 		;;
