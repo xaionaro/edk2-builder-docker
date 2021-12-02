@@ -7,6 +7,7 @@ RUN \
 	    bison \
 		build-essential \
 		ccache \
+		clang \
 		curl \
 		flex \
 		gcc-7 libgcc-7-dev \
@@ -15,6 +16,7 @@ RUN \
 		gcc cross-gcc-dev gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf \
 		git \
 		iasl \
+		llvm \
 		nasm \
 		sudo \
 		python \

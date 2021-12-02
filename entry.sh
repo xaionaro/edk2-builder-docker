@@ -31,6 +31,18 @@ fi
 cd /home/edk2/edk2 || exit 2
 . edksetup.sh
 
+find /home/edk2 -wholename '*/BaseTools/Source/C/*[mM]akefile' -exec sed -e 's/-Werror//g' -i {} +
+find /home/edk2 -wholename '*/BaseTools/Source/C' -exec make -C {} \;
+
+if [ "$DSC_PATH" != '' ]; then
+    IFS=':' read -ra PKG_PATHS <<< "$PACKAGES_PATH"
+    for PKG_PATH in "${PKG_PATHS[@]}"; do
+        if [ -f "${PKG_PATH}/${DSC_PATH}" ]; then
+            DSC_PATH="${PKG_PATH}/${DSC_PATH}"
+            break
+        fi
+    done
+fi
 if [ "$DSC_PATH" = '' ]; then
   DSC_PATH="$(readlink -f /home/edk2/src/*.dsc)"
 fi
@@ -40,23 +52,30 @@ fi
 
 if [ "$CC_FLAGS" != '' ]; then
     CC_FLAGS_SETTING="${BUILD_TARGET}_${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS"
-    if [ -f /home/edk2/edk2/Conf/tools_def.txt ]; then
-        cp -v /home/edk2/edk2/Conf/tools_def.txt-orig /home/edk2/edk2/Conf/tools_def.txt 2>/dev/null ||
-          cp -v /home/edk2/edk2/Conf/tools_def.txt /home/edk2/edk2/Conf/tools_def.txt-orig
-        echo "${CC_FLAGS_SETTING} = DEF(${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS) ${CC_FLAGS}" >> /home/edk2/edk2/Conf/tools_def.txt
-    else
-        for DSC_PATH_ITEM in ${DSC_PATH[0]}; do
-            cp -v "${DSC_PATH_ITEM}"-orig "${DSC_PATH_ITEM}" 2>/dev/null ||
-                cp -v "${DSC_PATH_ITEM}" "${DSC_PATH_ITEM}"-orig
-            echo -e "\n[BuildOptions.common]\n${CC_FLAGS_SETTING} = ${CC_FLAGS}\n" >> "${DSC_PATH_ITEM}"
-        done
-    fi
+    append_cc_flags_to_tools_def() {
+        TOOLS_DEF_PATH="$1"; shift
+        cp -v "$TOOLS_DEF_PATH"-orig "$TOOLS_DEF_PATH" 2>/dev/null ||
+          cp -v "$TOOLS_DEF_PATH" "$TOOLS_DEF_PATH"-orig 2>/dev/null
+        echo "${CC_FLAGS_SETTING} = DEF(${TOOLCHAIN}_${TARGET_ARCH}_CC_FLAGS) ${CC_FLAGS}" >> "$TOOLS_DEF_PATH"
+    }
+    find / -name "tools_def.txt" | while read -r TOOLS_DEF_PATH; do
+        append_cc_flags_to_tools_def "$TOOLS_DEF_PATH"
+    done
+    append_cc_flags_to_tools_def "/home/edk2/edk2/Conf/tools_def.txt"
+    append_cc_flags_to_tools_def "/home/edk2/customConf/tools_def.txt"
+
+    for DSC_PATH_ITEM in ${DSC_PATH[0]}; do
+        cp -v "${DSC_PATH_ITEM}"-orig "${DSC_PATH_ITEM}" 2>/dev/null ||
+            cp -v "${DSC_PATH_ITEM}" "${DSC_PATH_ITEM}"-orig
+        echo -e "\n[BuildOptions.common]\n${CC_FLAGS_SETTING} = ${CC_FLAGS}\n" >> "${DSC_PATH_ITEM}"
+    done
 fi
 
-echo "$PATH"
-echo "$PACKAGES_PATH"
+echo "PATH:<$PATH>"
+echo "DSC_PATH:<$DSC_PATH>"
+echo "PACKAGES_PATH:<$PACKAGES_PATH>"
 gcc --version
 
 for DSC_PATH_ITEM in ${DSC_PATH[0]}; do
-  build -v -p "$DSC_PATH_ITEM" -a "$TARGET_ARCH" -b "$BUILD_TARGET" -t "$TOOLCHAIN" $OPTIONS || exit
+  build -v -p "$DSC_PATH_ITEM" -a "$TARGET_ARCH" -b "$BUILD_TARGET" -t "$TOOLCHAIN" --conf "/home/edk2/customConf" $OPTIONS || exit
 done
