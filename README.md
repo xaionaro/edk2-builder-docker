@@ -49,6 +49,30 @@ Explanation:
 * Directory `/home/edk2/Build` is defined in `UefiToolsPkg/UefiToolsPkg.dsc` as `Build`, since the working directory is `/home/edk2`
 * Directory `/home/edk2/src` is hardcoded in the `Dockerfile` as the directory with the source code of what do we want to compile.
 
+### Another example
+
+```sh
+cd "`mktemp -d`"
+mkdir -m 1777 /tmp/RefindPlusPkg-build
+
+git clone --recursive https://github.com/dakanji/RefindPlus RefindPlusPkg
+docker pull xaionaro2/edk2-builder:RefindPlusUDK
+
+# hacky fix for duplication error of lodepng_malloc and lodepng_free
+sed -e 's/void[*] lodepng_malloc/void* _dup_lodepng_malloc/' \
+    -e 's/void lodepng_free/void _dup_lodepng_free/' \
+    -i RefindPlusPkg/libeg/lodepng_xtra.c
+
+# building
+docker run --rm \
+    -e CFLAGS=-Wno-error \
+    -e TOOLCHAIN=CLANG38 \
+    -e DSC_PATH=RefindPlusPkg/RefindPlusPkg-DBG.dsc \
+    -v "$PWD/RefindPlusPkg/:/home/edk2/edk2/RefindPlusPkg/" \
+    -v "/tmp/RefindPlusPkg-build:/home/edk2/Build" \
+    xaionaro2/edk2-builder:RefindPlusUDK
+```
+
 # Rebuild
 
 For example if one needs to build the latest EDK2 then they may use:
