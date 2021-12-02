@@ -6,7 +6,8 @@ git clone --recursive https://github.com/andreiw/UefiToolsPkg
 docker pull xaionaro2/edk2-builder:vUDK2018
 
 # removing "SetCon" from the list if components, because the tool is not buildable
-sed -e 's%  UefiToolsPkg/Applications/SetCon/SetCon.inf%#  UefiToolsPkg/Applications/SetCon/SetCon.inf%' -i UefiToolsPkg/UefiToolsPkg.dsc
+sed -e 's%  UefiToolsPkg/Applications/SetCon/SetCon.inf%#  UefiToolsPkg/Applications/SetCon/SetCon.inf%' \
+    -i-orig UefiToolsPkg/UefiToolsPkg.dsc
 
 exec docker run --rm \
   -e CFLAGS=-Wno-error \
