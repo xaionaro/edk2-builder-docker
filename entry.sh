@@ -21,6 +21,13 @@ if [ "$ADDPATH" != '' ]; then
     export PATH="$ADDPATH:$PATH"
 fi
 
+if [ "$EDK2_LIBC" != '' ]; then
+    git -C edk2-libc checkout "$EDK2_LIBC"
+fi
+if [ "$EDK2_PLATFORMS" != '' ]; then
+    git -C edk2-platforms checkout "$EDK2_PLATFORMS"
+fi
+
 DEFAULT_PACKAGES_PATH="/home/edk2:/home/edk2/src:/home/edk2/edk2:/home/edk2/libc:/home/edk2/platforms"
 if [ "$PACKAGES_PATH" != '' ]; then
     export PACKAGES_PATH="$PACKAGES_PATH:$DEFAULT_PACKAGES_PATH"
