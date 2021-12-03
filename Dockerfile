@@ -31,7 +31,8 @@ RUN \
 		zip \
 	&& DEBIAN_FRONTEND=noninteractive apt-get clean
 
-RUN curl https://apt.llvm.org/llvm.sh | bash -x
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y lsb-release software-properties-common && \
+	curl https://apt.llvm.org/llvm.sh | bash -x
 
 RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output /tmp/get-pip.py && python /tmp/get-pip.py
 RUN pip3 install -q uefi_firmware && pip install -q uefi_firmware
