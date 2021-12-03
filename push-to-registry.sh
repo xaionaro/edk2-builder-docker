@@ -53,7 +53,7 @@ push() {
 if [ "$@" != "" ]; then
 	TAGS=($@)
 else
-	TAGS=(latest $(git ls-remote --tags https://github.com/tianocore/edk2 | awk '{print $2}' | sed -e 's%refs/tags/%%g' | grep -v '{}') RefindPlusUDK)
+	TAGS=(latest $(git ls-remote --tags https://github.com/tianocore/edk2 | awk '{print $2}' | sed -e 's%refs/tags/%%g' | grep -v '{}') RefindPlusUDK AcidantheraAUDK)
 fi
 echo "TAGS:<${TAGS[@]}>"
 
