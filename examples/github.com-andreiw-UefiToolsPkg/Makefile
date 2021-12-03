@@ -1,5 +1,5 @@
 all:
-	sudo mace clean
+	sudo make clean
 	mkdir build
 	cd build && ../build.sh
 
