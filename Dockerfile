@@ -7,7 +7,7 @@ RUN \
 		bison \
 		build-essential \
 		ccache \
-		clang clang-8 clang-9 clang-10 clang-11 clang-12 clang-13 \
+		clang clang-8 clang-9 clang-10 clang-11 clang-12 \
 		curl \
 		flex \
 		gcc-7 libgcc-7-dev \
@@ -30,6 +30,8 @@ RUN \
 		wget \
 		zip \
 	&& DEBIAN_FRONTEND=noninteractive apt-get clean
+
+RUN curl https://apt.llvm.org/llvm.sh | bash -x
 
 RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output /tmp/get-pip.py && python /tmp/get-pip.py
 RUN pip3 install -q uefi_firmware && pip install -q uefi_firmware
