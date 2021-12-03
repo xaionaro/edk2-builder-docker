@@ -1,5 +1,5 @@
 all:
-	mkdir -p build
+	mkdir build
 	cd build && ../build.sh
 
 clean:
