@@ -28,4 +28,4 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
       - run: echo "Building"
-      - run: make -C ${{ github.workspace }}/examples/sourceforge.com-srs5694-Refind
+      - run: make -C ${{ github.workspace }}/examples/sourceforge.net-srs5694-Refind
