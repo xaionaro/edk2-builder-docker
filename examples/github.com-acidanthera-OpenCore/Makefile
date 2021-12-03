@@ -1,4 +1,5 @@
 all:
+	sudo make clean
 	mkdir build
 	cd build && ../build.sh
 
