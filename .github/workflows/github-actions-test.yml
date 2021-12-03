@@ -1,6 +1,13 @@
 name: Test on examples
 on: [push]
 jobs:
+  github.com-acidanthera-OpenCore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - run: echo "Building"
+      - run: make -C ${{ github.workspace }}/examples/github.com-acidanthera-OpenCore
   github-com-andreiw-UefiToolsPkg:
     runs-on: ubuntu-latest
     steps:
