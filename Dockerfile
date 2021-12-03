@@ -4,10 +4,10 @@ MAINTAINER Dmitrii Okunev <xaionaro@dx.center>
 RUN \
 	DEBIAN_FRONTEND=noninteractive apt-get update && \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y \
-	    bison \
+		bison \
 		build-essential \
 		ccache \
-		clang \
+		clang clang-8 clang-9 clang-10 clang-11 clang-12 clang-13 \
 		curl \
 		flex \
 		gcc-7 libgcc-7-dev \
