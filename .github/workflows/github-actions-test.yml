@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v2
       - run: echo "Building"
       - run: make -C ${{ github.workspace }}/examples/github.com-dakanji-RefindPlus
-  sourceforge-com-srs5694-Refind:
+  sourceforge-net-srs5694-Refind:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
