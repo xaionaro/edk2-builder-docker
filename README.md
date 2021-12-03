@@ -76,7 +76,12 @@ docker run --rm \
     -v "/tmp/RefindPlusPkg-build:/home/edk2/Build" \
     xaionaro2/edk2-builder:RefindPlusUDK
 ```
-
+### Building with make
+Clone this repository and navigate to:
+```
+cd /edk2-builder-docker/edk2-builder-docker-main/examples/sourceforge.net-srs5694-Refind
+sudo make
+```
 # Rebuild
 
 For example if one needs to build the latest EDK2 then they may use:
