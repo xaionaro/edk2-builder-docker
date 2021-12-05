@@ -14,3 +14,4 @@ exec docker run --rm \
     -v "$PWD/RefindPkg/:/home/edk2/edk2/RefindPkg/" \
     -v "$PWD/out:/home/edk2/Build" \
     xaionaro2/edk2-builder:vUDK2018
+    
