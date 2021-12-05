@@ -86,6 +86,7 @@ sudo make
 
 For example if one needs to build the latest EDK2 then they may use:
 ```sh
+docker builder prune
 EDK2_VERSION=latest DOCKERFILE_PATH=Dockerfile IMAGE_NAME=xaionaro2/edk2-builder:latest hooks/build
 ```
 
@@ -99,6 +100,7 @@ EDK2_VERSION=edk2-stable202111 DOCKERFILE_PATH=Dockerfile IMAGE_NAME=xaionaro2/e
 Fork the repository, add the repository to file [`clone-edk2.sh`](https://github.com/xaionaro/edk2-builder-docker/blob/main/clone-edk2.sh) with a new special tag,
 and then run:
 ```
+docker builder prune
 EDK2_VERSION=<THE SPECIAL TAG HERE> DOCKERFILE_PATH=Dockerfile IMAGE_NAME=<SOME IMAGE NAME>:<SOME TAG> hooks/build
 ```
 It will build a docker image `<SOME IMAGE NAME>:<SOME TAG>` using the custom EDK2 repository.
