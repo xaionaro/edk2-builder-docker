@@ -39,7 +39,6 @@ ENV BUILD_TARGET "DEBUG"
 
 ENV PYTHON_COMMAND python3
 
-RUN git clone --depth=1 "https://github.com/tianocore/edk2" edk2
 RUN git clone --depth=1 "https://github.com/tianocore/edk2-libc" libc
 RUN git clone --depth=1 "https://github.com/tianocore/edk2-platforms" platforms
 
