@@ -5,6 +5,9 @@ case "$EDK2_VERSION" in
 	latest)
 		git clone --depth=1 "https://github.com/tianocore/edk2" edk2
 		;;
+	vUDK2018)
+		git clone -b vUDK2018 --depth=1 "https://github.com/tianocore/edk2" edk2
+		;;
 	RefindPlusUDK)
 		git clone --depth=1 "https://github.com/dakanji/RefindPlusUDK" edk2
 		;;	

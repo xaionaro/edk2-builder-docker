@@ -61,8 +61,8 @@ ENV BUILD_TARGET "DEBUG"
 
 ENV PYTHON_COMMAND python3
 
-RUN git clone "https://github.com/tianocore/edk2-libc" libc
-RUN git clone "https://github.com/tianocore/edk2-platforms" platforms
+RUN git clone --depth=1 "https://github.com/tianocore/edk2-libc" libc
+RUN git clone --depth=1 "https://github.com/tianocore/edk2-platforms" platforms
 
 ARG EDK2_VERSION=${EDK2_VERSION}
 ADD clone-edk2.sh /home/edk2/clone-edk2.sh
