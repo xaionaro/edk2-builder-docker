@@ -6,7 +6,8 @@ case "$EDK2_VERSION" in
 		git clone --depth=1 "https://github.com/tianocore/edk2" edk2
 		;;
 	vUDK2018)
-		git clone -b vUDK2018 --depth=1 "https://github.com/tianocore/edk2" edk2
+		git clone "https://github.com/tianocore/edk2" edk2
+		git -C edk2 checkout "$EDK2_VERSION"
 		;;
 	RefindPlusUDK)
 		git clone --depth=1 "https://github.com/dakanji/RefindPlusUDK" edk2
@@ -15,7 +16,7 @@ case "$EDK2_VERSION" in
 		git clone --depth=1 "https://github.com/acidanthera/audk" edk2
 		;;
 	*)
-		git clone --depth=1 "https://github.com/tianocore/edk2" edk2
+		git clone "https://github.com/tianocore/edk2" edk2
 		git -C edk2 checkout "$EDK2_VERSION"
 		;;
 esac
