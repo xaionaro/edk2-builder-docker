@@ -20,4 +20,4 @@ case "$EDK2_VERSION" in
 		git -C edk2 checkout "$EDK2_VERSION"
 		;;
 esac
-git -C edk2 submodule update --init --recommend-shallow 
+git -C edk2 submodule update --init 
