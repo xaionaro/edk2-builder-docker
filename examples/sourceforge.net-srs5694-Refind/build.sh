@@ -7,7 +7,7 @@ chmod -R 1777 RefindPkg
 # Comment out the docker pull line to use the rebuild Docker image in Makefile 
 # Remove the comments in the Makefile as well to start the rebuild process.
 
-docker pull xaionaro2/edk2-builder:vUDK2018
+#docker pull xaionaro2/edk2-builder:vUDK2018
 
 # building DEBUG
 exec docker run --rm \
