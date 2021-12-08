@@ -11,7 +11,10 @@ case "$EDK2_VERSION" in
 		;;
 	RefindPlusUDK)
 		git clone --depth=1 "https://github.com/dakanji/RefindPlusUDK" edk2
-		;;	
+		;;
+	RefindPlusUDKJVT)
+		git clone --depth=1 "https://github.com/joevt/RefindPlusUDK" edk2
+		;;		
 	AcidantheraAUDK)
 		git clone --depth=1 "https://github.com/acidanthera/audk" edk2
 		;;

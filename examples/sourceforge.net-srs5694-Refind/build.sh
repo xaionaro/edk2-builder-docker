@@ -3,8 +3,11 @@
 mkdir -pm 1777 out
 
 [[ -d RefindPkg ]] || git clone --recursive https://git.code.sf.net/p/refind/code RefindPkg
-# Uncomment line 7 to use the the existing image, coment out to use the rebuild image.
-#docker pull xaionaro2/edk2-builder:vUDK2018
+chmod -R 1777 RefindPkg
+# Comment out the docker pull line to use the rebuild Docker image in Makefile 
+# Remove the comments in the Makefile as well to start the rebuild process.
+
+docker pull xaionaro2/edk2-builder:vUDK2018
 
 # building DEBUG
 exec docker run --rm \
