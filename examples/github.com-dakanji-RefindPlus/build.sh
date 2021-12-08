@@ -3,6 +3,7 @@
 mkdir -m 1777 out
 
 git clone --recursive https://github.com/dakanji/RefindPlus RefindPlusPkg
+chmod -R 1777 RefindPkg
 # Comment out the docker pull line to use the rebuild Docker image in Makefile 
 # Remove the comments in the Makefile as well to start the rebuild process.
 
