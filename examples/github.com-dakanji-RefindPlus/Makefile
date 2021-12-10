@@ -5,8 +5,8 @@ all:
 	#EDK2_VERSION=RefindPlusUDK DOCKERFILE_PATH=../../Dockerfile.RefindPlus IMAGE_NAME=xaionaro2/edk2-builder:RefindPlusUDK ../../hooks/build
 	# Comment out the docker pull line in Build.sh file
 	mkdir build
-	cd build && ../build.sh
-	cd build && source ../build1.sh
+	cd build && . ../build.sh
+	cd build && . ../build1.sh
 
 clean:
 	rm -rf build

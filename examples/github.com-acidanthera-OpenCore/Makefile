@@ -1,8 +1,8 @@
 all:
 	make clean
 	mkdir build
-	cd build && ../build.sh
-	cd build && source ../build1.sh
+	cd build && . ../build.sh
+	cd build && . ../build1.sh
 
 clean:
 	rm -rf build
