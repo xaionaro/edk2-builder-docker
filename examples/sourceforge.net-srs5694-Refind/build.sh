@@ -1,6 +1,7 @@
 #!/bin/bash -xe
 
-mkdir -pm 1777 out
+mkdir -pm 1777 out ||
+	mkdir -p out
 
 [[ -d RefindPkg ]] || git clone --recursive https://git.code.sf.net/p/refind/code RefindPkg
 docker pull xaionaro2/edk2-builder:vUDK2018
