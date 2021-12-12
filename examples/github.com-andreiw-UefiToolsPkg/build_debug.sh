@@ -3,7 +3,6 @@
 mkdir -m 1777 out
 
 git clone --recursive https://github.com/andreiw/UefiToolsPkg
-docker pull xaionaro2/edk2-builder:vUDK2018
 
 # removing "SetCon" from the list if components, because the tool is not buildable
 sed -e 's%  UefiToolsPkg/Applications/SetCon/SetCon.inf%#  UefiToolsPkg/Applications/SetCon/SetCon.inf%' \
