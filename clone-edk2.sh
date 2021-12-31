@@ -16,7 +16,7 @@ case "$EDK2_VERSION" in
 		;;
 	*)
 		git clone -b "$EDK2_VERSION" "https://github.com/tianocore/edk2" edk2 || \
- 			git clone "https://github.com/tianocore/edk2" edk2
+ 			git -C edk2 checkout "$EDK2_VERSION"
 		;;
 esac
 git -C edk2 submodule update --init --recommend-shallow
