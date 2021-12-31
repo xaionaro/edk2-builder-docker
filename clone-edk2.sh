@@ -15,7 +15,7 @@ case "$EDK2_VERSION" in
 		git clone --depth=1 "https://github.com/acidanthera/audk" edk2
 		;;
 	*)
-		git clone --depth=1 -b "$EDK2_VERSION" "https://github.com/tianocore/edk2" edk2 || \
+		git clone -b "$EDK2_VERSION" "https://github.com/tianocore/edk2" edk2 || \
  			git clone "https://github.com/tianocore/edk2" edk2
 		;;
 esac
