@@ -23,6 +23,12 @@ if [ "$1" = "--force" ]; then
 	shift
 fi
 
+ONLY_LATESTS=0
+if [ "$1" = "--only-latests" ]; then
+	ONLY_LATESTS=1
+	shift
+fi
+
 
 if [ "$REGISTRY_ADDR" != '' ]; then
 	docker login "$REGISTRY_ADDR" -u "$REGISTRY_LOGIN" --password-stdin <<< "$REGISTRY_KEY"
@@ -50,10 +56,14 @@ push() {
 	docker rmi "$IMAGE_NAME"
 }
 
-if [ "$@" != "" ]; then
+if [ "$*" != "" ]; then
 	TAGS=($@)
 else
-	TAGS=(latest $(git ls-remote --tags https://github.com/tianocore/edk2 | awk '{print $2}' | sed -e 's%refs/tags/%%g' | grep -v '{}') RefindPlusUDK AcidantheraAUDK)
+	TAGS=(latest)
+	if [ "$ONLY_LATESTS" -eq 0 ]; then
+		TAGS=($(git ls-remote --tags https://github.com/tianocore/edk2 | awk '{print $2}' | sed -e 's%refs/tags/%%g' | grep -v '{}'))
+	fi
+	TAGS+=(RefindPlusUDK AcidantheraAUDK)
 fi
 echo "TAGS:<${TAGS[@]}>"
 
