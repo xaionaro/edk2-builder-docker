@@ -2,7 +2,7 @@
 
 mkdir -m 1777 out
 
-git clone --recursive https://github.com/acidanthera/OpenCorePkg OpenCorePkg
+git clone --recursive https://github.com/acidanthera/OpenCorePkg -b 0.8.5 OpenCorePkg
 docker pull xaionaro2/edk2-builder:AcidantheraAUDK
 
 # building DEBUG
