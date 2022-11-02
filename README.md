@@ -82,6 +82,8 @@ docker run --rm \
 ```sh
 cd "`mktemp -d`"
 
+# We clone the edk2 source code again, just to be able to
+# do custom changes to OVMF, but this is not necessary.
 git clone https://github.com/tianocore/edk2 edk2 -b edk2-stable202208
 
 docker run --rm \

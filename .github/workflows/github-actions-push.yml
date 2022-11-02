@@ -21,22 +21,6 @@ jobs:
           REGISTRY_LOGIN: xaionaro2
           REGISTRY_KEY: ${{ secrets.REGISTRY_KEY }}
           REGISTRY_IMAGE_NAME: xaionaro2/edk2-builder
-  dockerhub-force:
-    environment: dockerhub
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          access_token: ${{ github.token }}
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - run: ${{ github.workspace }}/push-to-registry.sh --force
-        env:
-          REGISTRY_ADDR: registry.hub.docker.com
-          REGISTRY_LOGIN: xaionaro2
-          REGISTRY_KEY: ${{ secrets.REGISTRY_KEY }}
-          REGISTRY_IMAGE_NAME: xaionaro2/edk2-builder
   github:
     runs-on: ubuntu-latest
     steps:
@@ -47,21 +31,6 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v2
       - run: ${{ github.workspace }}/push-to-registry.sh
-        env:
-          REGISTRY_ADDR: ghcr.io
-          REGISTRY_LOGIN: ${{ github.actor }}
-          REGISTRY_KEY: ${{ secrets.GITHUB_TOKEN }}
-          REGISTRY_IMAGE_NAME: ${{ github.repository }}
-  github-force:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          access_token: ${{ github.token }}
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - run: ${{ github.workspace }}/push-to-registry.sh --force
         env:
           REGISTRY_ADDR: ghcr.io
           REGISTRY_LOGIN: ${{ github.actor }}
