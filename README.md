@@ -77,6 +77,16 @@ docker run --rm \
     xaionaro2/edk2-builder:RefindPlusUDK
 ```
 
+### OVMF
+
+```sh
+cd "`mktemp -d`"
+git clone https://github.com/tianocore/edk2
+
+mkdir -m 1777 /tmp/OVMF-build
+docker run --rm -e DSC_PATH=OvmfPkg/OvmfPkgX64.dsc -v "$PWD/edk2:/home/edk2/src" -v "/tmp/OVMF-build:/home/edk2/Build" xaionaro2/edk2-builder:latest
+```
+
 # Rebuild
 
 For example if one needs to build the latest EDK2 then they may use:
