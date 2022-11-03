@@ -63,7 +63,7 @@ else
 	if [ "$ONLY_LATESTS" -eq 0 ]; then
 		TAGS=($(git ls-remote --tags https://github.com/tianocore/edk2 | awk '{print $2}' | sed -e 's%refs/tags/%%g' | grep -v '{}'))
 	fi
-	TAGS+=(RefindPlusUDK AcidantheraAUDK)
+	TAGS+=(RefindPlusUDK AcidantheraAUDK QEMUEDK2)
 fi
 echo "TAGS:<${TAGS[@]}>"
 
