@@ -28,7 +28,7 @@ The purpose of this project is to prepare a comprehensive build environment whic
 Take any EDK2-based project you need to compile, for example "[github.com/andreiw/UefiToolsPkg](https://github.com/andreiw/UefiToolsPkg)":
 ```sh
 cd "`mktemp -d`"
-mkdir -m 1777 /tmp/UefiToolsPkg-build
+mkdir -m 1777 out
 
 git clone --recursive https://github.com/andreiw/UefiToolsPkg
 docker pull xaionaro2/edk2-builder:vUDK2018
