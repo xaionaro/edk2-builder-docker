@@ -1,6 +1,7 @@
 #!/bin/bash -xe
 
-mkdir -m 1777 out
+mkdir -pm 1777 out ||
+	mkdir -p out
 
 git clone --recursive https://github.com/dakanji/RefindPlus RefindPlusPkg
 docker pull xaionaro2/edk2-builder:RefindPlusUDK

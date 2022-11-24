@@ -1,6 +1,7 @@
 #!/bin/bash -xe
 
-mkdir -m 1777 out
+mkdir -pm 1777 out ||
+	mkdir -p out
 
 git clone --recursive https://github.com/acidanthera/OpenCorePkg -b 0.8.5 OpenCorePkg
 docker pull xaionaro2/edk2-builder:AcidantheraAUDK
