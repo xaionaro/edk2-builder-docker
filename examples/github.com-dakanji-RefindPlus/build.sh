@@ -10,12 +10,6 @@ sed -e 's/void[*] lodepng_refit_malloc/void* _dup_lodepng_refit_malloc/' \
     -e 's/void lodepng_refit_free/void _dup_lodepng_refit_free/' \
     -i-orig RefindPlusPkg/libeg/lodepng_xtra.c
 
-
-cat > RefindPlusPkg/build.sh <<EOF
-/home/edk2/entry.sh
-EOF
-chmod +x RefindPlusPkg/build.sh
-
 docker run --rm \
     -e CFLAGS=-Wno-error \
     -e TOOLCHAIN=CLANG38 \
@@ -23,4 +17,4 @@ docker run --rm \
     -e DSC_PATH=RefindPlusPkg/RefindPlusPkg.dsc \
     -v "$PWD/RefindPlusPkg/:/home/edk2/edk2/RefindPlusPkg/" \
     -v "$PWD/out:/home/edk2/Build" \
-    xaionaro2/edk2-builder:RefindPlusUDK /bin/bash /home/edk2/edk2/RefindPlusPkg/build.sh
+    xaionaro2/edk2-builder:RefindPlusUDK
