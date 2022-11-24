@@ -11,6 +11,9 @@ case "$EDK2_VERSION" in
 	AcidantheraAUDK)
 		git clone --depth=1 "https://github.com/acidanthera/audk" edk2
 		;;
+	QEMUEDK2)
+		git clone "https://gitlab.com/qemu-project/edk2" edk2
+		;;
 	*)
 		git clone --depth=1 -b "$EDK2_VERSION" "https://github.com/tianocore/edk2" edk2 || \
 			git clone "https://github.com/tianocore/edk2" edk2

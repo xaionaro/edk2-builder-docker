@@ -1,5 +1,7 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 MAINTAINER Dmitrii Okunev <xaionaro@dx.center>
+
+RUN echo "deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse" | tee /etc/apt/sources.list.d/focal.list
 
 RUN \
 	DEBIAN_FRONTEND=noninteractive apt-get update && \
@@ -19,8 +21,6 @@ RUN \
 		llvm \
 		nasm \
 		sudo \
-		python \
-		python-dev \
 		python3 \
 		python3-distutils \
 		python3-pip \
@@ -34,7 +34,9 @@ RUN \
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y lsb-release software-properties-common && \
 	curl https://apt.llvm.org/llvm.sh | bash -x
 
-RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output /tmp/get-pip.py && python /tmp/get-pip.py
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python python-dev && apt-get clean && \
+	curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output /tmp/get-pip.py && \
+	python /tmp/get-pip.py
 RUN pip3 install -q uefi_firmware && pip install -q uefi_firmware
 
 RUN useradd -m edk2 && \

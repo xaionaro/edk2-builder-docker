@@ -62,19 +62,44 @@ mkdir -m 1777 /tmp/RefindPlusPkg-build
 git clone --recursive https://github.com/dakanji/RefindPlus RefindPlusPkg
 docker pull xaionaro2/edk2-builder:RefindPlusUDK
 
+#!/bin/bash -xe
+
+mkdir -m 1777 out
+
+git clone --recursive https://github.com/dakanji/RefindPlus RefindPlusPkg
+docker pull xaionaro2/edk2-builder:RefindPlusUDK
+
 # hacky fix for duplication error of lodepng_malloc and lodepng_free
-sed -e 's/void[*] lodepng_malloc/void* _dup_lodepng_malloc/' \
-    -e 's/void lodepng_free/void _dup_lodepng_free/' \
+sed -e 's/void[*] lodepng_refit_malloc/void* _dup_lodepng_refit_malloc/' \
+    -e 's/void lodepng_refit_free/void _dup_lodepng_refit_free/' \
     -i-orig RefindPlusPkg/libeg/lodepng_xtra.c
 
-# building
 docker run --rm \
     -e CFLAGS=-Wno-error \
     -e TOOLCHAIN=CLANG38 \
-    -e DSC_PATH=RefindPlusPkg/RefindPlusPkg-DBG.dsc \
+    -e BUILD_TARGET=RELEASE \
+    -e DSC_PATH=RefindPlusPkg/RefindPlusPkg.dsc \
     -v "$PWD/RefindPlusPkg/:/home/edk2/edk2/RefindPlusPkg/" \
-    -v "/tmp/RefindPlusPkg-build:/home/edk2/Build" \
+    -v "$PWD/out:/home/edk2/Build" \
     xaionaro2/edk2-builder:RefindPlusUDK
+```
+
+### OVMF
+
+```sh
+cd "`mktemp -d`"
+
+# We clone the edk2 source code again, just to be able to
+# do custom changes to OVMF, but this is not necessary.
+git clone https://github.com/tianocore/edk2 edk2 -b edk2-stable202208
+
+docker run --rm \
+    -e CFLAGS=-Wno-error \
+    -e DSC_PATH=OvmfPkg/OvmfPkgX64.dsc \
+    -e BUILD_TARGET=RELEASE \
+    -v "$PWD/edk2/OvmfPkg:/home/edk2/src/" \
+    -v "$PWD/out:/home/edk2/Build" \
+    xaionaro2/edk2-builder:edk2-stable202208
 ```
 
 # Rebuild
