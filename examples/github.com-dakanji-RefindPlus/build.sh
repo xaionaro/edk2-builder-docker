@@ -6,10 +6,9 @@ mkdir -pm 1777 out ||
 git clone --recursive https://github.com/dakanji/RefindPlus RefindPlusPkg
 docker pull xaionaro2/edk2-builder:RefindPlusUDK
 
-# hacky fix for duplication error of lodepng_malloc and lodepng_free
-sed -e 's/void[*] lodepng_refit_malloc/void* _dup_lodepng_refit_malloc/' \
-    -e 's/void lodepng_refit_free/void _dup_lodepng_refit_free/' \
-    -i-orig RefindPlusPkg/libeg/lodepng_xtra.c
+ sed -e 's/void[*] lodepng_refit_malloc/void* _dup_lodepng_refit_malloc/' \
+     -e 's/void lodepng_refit_free/void _dup_lodepng_refit_free/' \
+     -i-orig RefindPlusPkg/libeg/lodepng_xtra.c
 
 docker run --rm \
     -e CFLAGS=-Wno-error \
